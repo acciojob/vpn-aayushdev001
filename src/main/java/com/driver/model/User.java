@@ -43,4 +43,11 @@ public class User
     {
         return connected;
     }
+    public Country getOriginalCountry() {
+        return country;
+    }
+
+    public void setOriginalCountry(Country country) {
+        this.country = country;
+    }
 }

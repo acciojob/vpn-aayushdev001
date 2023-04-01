@@ -25,7 +25,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         User user = userRepository2.findById(userId).get();
 
         if(user.getConnected()) throw new Exception("Already connected");
-        else if(user.getCountry().equals(countryName)) return user;
+        else if(user.getOriginalCountry().getCountryName().name().equals(countryName)) return user;
 
         List<ServiceProvider> list = user.getServiceProviderList();
         if(list == null) throw new Exception("Unable to connect");
@@ -33,7 +33,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         {
             if(sp.getCountryList().contains(user.getCountry()))
             {
-                user.setMaskedIp(user.getCountry().getCode()+"."+sp.getId()+"."+user.getId());
+                user.setMaskedIp(user.getOriginalCountry().getCode()+"."+sp.getId()+"."+user.getId());
                 user.setConnected(true);
 
                 Connection  connection = new Connection(sp, user);
@@ -68,7 +68,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         if(reciever.getConnected())
         {
-            if(reciever.getMaskedIp().substring(0,3).equals(sender.getCountry().getCode()))
+            if(reciever.getMaskedIp().substring(0,3).equals(sender.getOriginalCountry().getCode()))
             {
                 return sender;
             }
@@ -79,13 +79,13 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
         else
         {
-            if(reciever.getCountry().getCode().equals(sender.getCountry().getCode()))
+            if(reciever.getOriginalCountry().getCode().equals(sender.getOriginalCountry().getCode()))
             {
                 return sender;
             }
             else
             {
-                return connect(senderId, reciever.getCountry().getCountryName().name());
+                return connect(senderId, reciever.getOriginalCountry().getCountryName().name());
             }
         }
     }
