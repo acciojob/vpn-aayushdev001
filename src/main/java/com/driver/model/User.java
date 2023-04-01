@@ -26,7 +26,7 @@ public class User
 
     String maskedIp;
 
-    boolean connected;
+    Boolean connected;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Connection> connectionList = new ArrayList<>();
